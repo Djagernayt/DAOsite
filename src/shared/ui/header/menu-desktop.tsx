@@ -1,9 +1,10 @@
 'use client'
 import Link from 'next/link'
-import { useTranslations } from 'next-intl'
+import { useTranslation } from 'react-i18next'
+
 
 export function DesktopMenu({ pathname, dark }: { pathname: string; dark: boolean }) {
-  const t = useTranslations()
+  const { t }           = useTranslation()     
   const link = (href: string, label: string) => (
     <Link
       key={href}
