@@ -1,12 +1,12 @@
-// import { Hero } from '@/widgets/hero/hero'
-// import { Features } from '@/widgets/features/features'
+import Hero from '@/features/hero/hero'
+import { Metadata } from 'next'
 
-import dynamic from 'next/dynamic';
+export const metadata: Metadata = {
+  title: 'ITS | DAO',
+  description: 'Decentralized solutions & analytics'
+}
 
-const Hero = dynamic(() => import('@/features/hero/hero'));
-// const Features = dynamic(() => import('@/widgets/features/features'), { ssr: false });
-
-export default function Home() {
+export default function HomePage() {
   return (
     <>
       <Hero />
@@ -20,15 +20,6 @@ export default function Home() {
   )
 }
 
-// import dynamic from 'next/dynamic';
-
-// const Hero = dynamic(() => import('@/features/hero/hero'), { ssr: false });
-
-// export default function Home() {
-//   return (
-//     <>
-//       <Hero />
-//       {/*  другие секции  */}
-//     </>
-//   );
-// }
+export function generateStaticParams() {
+  return [{ locale: 'ru' }, { locale: 'en' }]
+}
