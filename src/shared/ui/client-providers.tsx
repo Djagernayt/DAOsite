@@ -1,15 +1,35 @@
-// src/shared/ui/client-providers.tsx
-'use client'
+'use client';
 
-import { I18nextProvider } from 'react-i18next'
-import type { i18n } from 'i18next'
+import { useEffect } from 'react';
+import i18next from 'i18next';
+import { I18nextProvider, initReactI18next } from 'react-i18next';
+import HttpBackend from 'i18next-http-backend';
 
 export default function ClientProviders({
-  i18n,
-  children
+  children,
+  locale,
 }: {
-  i18n: i18n
-  children: React.ReactNode
+  children: React.ReactNode;
+  locale: string;
 }) {
-  return <I18nextProvider i18n={i18n}>{children}</I18nextProvider>
+  // runs only in the browser bundle
+  useEffect(() => {
+    if (!i18next.isInitialized) {
+      i18next
+        .use(HttpBackend)
+        .use(initReactI18next)         // safe in the browser
+        .init({
+          lng: locale,
+          fallbackLng: 'ru',
+          ns: ['common'],
+          defaultNS: 'common',
+          backend: { loadPath: '/locales/{{lng}}/{{ns}}.json' },
+          react: { useSuspense: false },
+        });
+    } else {
+      i18next.changeLanguage(locale);
+    }
+  }, [locale]);
+
+  return <I18nextProvider i18n={i18next}>{children}</I18nextProvider>;
 }
